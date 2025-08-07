@@ -5,33 +5,49 @@ import {
   updateCourse,
   deleteCourse,
 } from "../models/courseModel.js";
-import { getAllInstructors } from "../models/instructorModel.js";
+
+import db from "../config/db.js";
 
 export const listCourses = async (req, res) => {
   const courses = await getAllCourses();
-  res.render("courses/index", { courses });
+  res.render("courses/index", {
+    layout: "layouts/layout",
+    title: "Courses",
+    courses,
+  });
 };
 
 export const showCreateForm = async (req, res) => {
-  const instructors = await getAllInstructors();
-  res.render("courses/create", { instructors });
+  const [categories] = await db.promise().query("SELECT * FROM categories");
+  const [instructors] = await db.promise().query("SELECT * FROM instructors");
+  res.render("courses/create", {
+    layout: "layouts/layout",
+    title: "Add Course",
+    categories,
+    instructors,
+  });
 };
 
 export const createCourseHandler = async (req, res) => {
-  const { title, description, instructor_id } = req.body;
-  await createCourse(title, description, instructor_id);
+  await createCourse(req.body);
   res.redirect("/courses");
 };
 
 export const showUpdateForm = async (req, res) => {
   const course = await getCourseById(req.params.id);
-  const instructors = await getAllInstructors();
-  res.render("courses/update", { course, instructors });
+  const [categories] = await db.promise().query("SELECT * FROM categories");
+  const [instructors] = await db.promise().query("SELECT * FROM instructors");
+  res.render("courses/update", {
+    layout: "layouts/layout",
+    title: "Edit Course",
+    course,
+    categories,
+    instructors,
+  });
 };
 
 export const updateCourseHandler = async (req, res) => {
-  const { title, description, instructor_id } = req.body;
-  await updateCourse(req.params.id, title, description, instructor_id);
+  await updateCourse(req.params.id, req.body);
   res.redirect("/courses");
 };
 

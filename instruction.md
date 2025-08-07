@@ -18,34 +18,43 @@ EJS Views for rendering dynamic pages.
 MySQL database for storing data.
 
 ✅ Project Structure
-pgsql
-Copy
-Edit
-mini-crud-app/
+
+mini-course-management/
 ├── config/
 │ └── db.js # MySQL connection
 ├── controllers/
 │ ├── courseController.js
-│ └── instructorController.js
+│ ├── instructorController.js
+│ └── studentController.js # Handles student logic
 ├── models/
 │ ├── courseModel.js
-│ └── instructorModel.js
+│ ├── instructorModel.js
+│ └── studentModel.js # Database access for students
 ├── routes/
 │ ├── courseRoutes.js
-│ └── instructorRoutes.js
+│ ├── instructorRoutes.js
+│ └── studentRoutes.js # Routes for student pages
 ├── views/
+│ ├── layouts/
+│ │ └── layout.ejs # Main shared layout file
+│ ├── dashboard/
+│ │ └── index.ejs # Homepage (dashboard)
 │ ├── courses/
-│ │ ├── index.ejs
-│ │ ├── create.ejs
-│ │ └── update.ejs
-│ └── instructors/
-│ ├── index.ejs
-│ ├── create.ejs
-│ └── update.ejs
-├── public/ # (Optional: CSS, JS)
-├── server.js
-├── package.json
-└── INSTRUCTION.md
+│ │ ├── index.ejs # List courses
+│ │ ├── create.ejs # Create course form
+│ │ └── update.ejs # Update course form
+│ ├── instructors/
+│ │ ├── index.ejs # List instructors
+│ │ ├── create.ejs # Create instructor form
+│ │ └── update.ejs # Update instructor form
+│ └── students/ # EJS views for students
+│ ├── index.ejs # List students
+│ ├── create.ejs # Create student form
+│ └── update.ejs # Update student form
+├── public/ # (Optional: static CSS/JS assets)
+├── server.js # App entry point
+├── package.json # Project dependencies
+└── INSTRUCTION.md # Setup and usage guide
 
 ## Use the following dependencies:
 
@@ -55,6 +64,7 @@ mini-crud-app/
 "dotenv": "^17.2.1",
 "ejs": "^3.1.10",
 "express": "^5.1.0",
+"express-ejs-layouts": "^2.5.1",
 "mysql2": "^3.14.3"
 }
 

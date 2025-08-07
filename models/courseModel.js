@@ -1,59 +1,43 @@
 import db from "../config/db.js";
 
-export const getAllCourses = () => {
-  return new Promise((resolve, reject) => {
-    const sql = `
-      SELECT courses.*, instructors.name AS instructor_name
-      FROM courses
-      LEFT JOIN instructors ON courses.instructor_id = instructors.id
-    `;
-    db.query(sql, (err, results) => {
-      if (err) reject(err);
-      resolve(results);
-    });
-  });
+export const getAllCourses = async () => {
+  const [rows] = await db.promise().query(`
+    SELECT cr.*, i.name AS instructor_name, c.name AS category_name
+    FROM courses cr
+    LEFT JOIN instructors i ON cr.instructor_id = i.id
+    LEFT JOIN categories c ON cr.category_id = c.id
+  `);
+  return rows;
+};
+console.log(getAllCourses());
+
+export const getCourseById = async (id) => {
+  const [rows] = await db
+    .promise()
+    .query("SELECT * FROM courses WHERE id = ?", [id]);
+  return rows[0];
 };
 
-export const getCourseById = (id) => {
-  return new Promise((resolve, reject) => {
-    db.query("SELECT * FROM courses WHERE id = ?", [id], (err, result) => {
-      if (err) reject(err);
-      resolve(result[0]);
-    });
-  });
-};
-
-export const createCourse = (title, description, instructorId) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "INSERT INTO courses (title, description, instructor_id) VALUES (?, ?, ?)",
-      [title, description, instructorId],
-      (err, result) => {
-        if (err) reject(err);
-        resolve(result);
-      }
+export const createCourse = async (data) => {
+  const { title, description, category_id, instructor_id } = data;
+  await db
+    .promise()
+    .query(
+      "INSERT INTO courses (title, description, category_id, instructor_id) VALUES (?, ?, ?, ?)",
+      [title, description, category_id || null, instructor_id || null]
     );
-  });
 };
 
-export const updateCourse = (id, title, description, instructorId) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "UPDATE courses SET title=?, description=?, instructor_id=? WHERE id=?",
-      [title, description, instructorId, id],
-      (err, result) => {
-        if (err) reject(err);
-        resolve(result);
-      }
+export const updateCourse = async (id, data) => {
+  const { title, description, category_id, instructor_id } = data;
+  await db
+    .promise()
+    .query(
+      "UPDATE courses SET title=?, description=?, category_id=?, instructor_id=? WHERE id=?",
+      [title, description, category_id || null, instructor_id || null, id]
     );
-  });
 };
 
-export const deleteCourse = (id) => {
-  return new Promise((resolve, reject) => {
-    db.query("DELETE FROM courses WHERE id=?", [id], (err, result) => {
-      if (err) reject(err);
-      resolve(result);
-    });
-  });
+export const deleteCourse = async (id) => {
+  await db.promise().query("DELETE FROM courses WHERE id = ?", [id]);
 };

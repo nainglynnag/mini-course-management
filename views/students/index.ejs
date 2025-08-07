@@ -1,0 +1,44 @@
+<h2 class="text-3xl font-bold mb-6">Students</h2>
+
+<a
+  href="/students/create"
+  class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mb-4 inline-block"
+  >+ Add Student</a
+>
+
+<table class="w-full bg-white shadow rounded-lg overflow-hidden">
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="py-3 px-4 text-left">Name</th>
+      <th class="py-3 px-4 text-left">Email</th>
+      <th class="py-3 px-4 text-left">Course</th>
+      <th class="py-3 px-4 text-left">Registered</th>
+      <th class="py-3 px-4 text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% students.forEach(student => { %>
+    <tr class="border-b hover:bg-gray-50">
+      <td class="py-2 px-4"><%= student.name %></td>
+      <td class="py-2 px-4"><%= student.email %></td>
+      <td class="py-2 px-4"><%= student.course_title || '-' %></td>
+      <td class="py-2 px-4">
+        <%= new Date(student.created_at).toLocaleDateString() %>
+      </td>
+      <td class="py-2 px-4 text-center space-x-2">
+        <a
+          href="/students/update/<%= student.id %>"
+          class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500"
+          >Edit</a
+        >
+        <a
+          href="/students/delete/<%= student.id %>"
+          class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+          onclick="return confirm('Delete this student?')"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
