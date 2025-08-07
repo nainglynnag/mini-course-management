@@ -1,0 +1,46 @@
+<%- include('../partials/header') %>
+
+<h2 class="text-3xl font-semibold mb-6">Add New Course</h2>
+<form
+  action="/courses/create"
+  method="POST"
+  class="bg-white p-6 rounded shadow max-w-xl"
+>
+  <div class="mb-4">
+    <label class="block font-semibold mb-1">Title</label>
+    <input
+      type="text"
+      name="title"
+      class="w-full border border-gray-300 rounded px-3 py-2"
+      required
+    />
+  </div>
+  <div class="mb-4">
+    <label class="block font-semibold mb-1">Description</label>
+    <textarea
+      name="description"
+      class="w-full border border-gray-300 rounded px-3 py-2"
+    ></textarea>
+  </div>
+  <div class="mb-4">
+    <label class="block font-semibold mb-1">Instructor</label>
+    <select
+      name="instructor_id"
+      class="w-full border border-gray-300 rounded px-3 py-2"
+    >
+      <option value="">-- Select Instructor --</option>
+      <% instructors.forEach(instr => { %>
+      <option value="<%= instr.id %>"><%= instr.name %></option>
+      <% }) %>
+    </select>
+  </div>
+  <button
+    type="submit"
+    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+  >
+    Save
+  </button>
+  <a href="/courses" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+</form>
+
+<%- include('../partials/footer') %>

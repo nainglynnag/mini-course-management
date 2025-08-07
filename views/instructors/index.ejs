@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+<div class="flex justify-between items-center mb-6">
+  <h2 class="text-3xl font-semibold">Instructors</h2>
+  <a
+    href="/instructors/create"
+    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+    >+ Add Instructor</a
+  >
+</div>
+
+<table class="min-w-full bg-white rounded shadow overflow-hidden">
+  <thead class="bg-gray-200">
+    <tr>
+      <th class="py-2 px-4 text-left">Name</th>
+      <th class="py-2 px-4 text-left">Email</th>
+      <th class="py-2 px-4 text-left">Created At</th>
+      <th class="py-2 px-4 text-center">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% instructors.forEach(instr => { %>
+    <tr class="border-b hover:bg-gray-50">
+      <td class="py-2 px-4"><%= instr.name %></td>
+      <td class="py-2 px-4"><%= instr.email %></td>
+      <td class="py-2 px-4">
+        <%= new Date(instr.created_at).toLocaleDateString() %>
+      </td>
+      <td class="py-2 px-4 text-center space-x-2">
+        <a
+          href="/instructors/update/<%= instr.id %>"
+          class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500"
+          >Edit</a
+        >
+        <a
+          href="/instructors/delete/<%= instr.id %>"
+          class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+          onclick="return confirm('Delete this instructor?')"
+          >Delete</a
+        >
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
+
+<!-- <%- include('../partials/footer') %> -->
