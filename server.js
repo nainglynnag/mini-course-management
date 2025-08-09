@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import courseRoutes from "./routes/courseRoutes.js";
+import studentRoutes from "./routes/studentRoutes.js";
 import instructorRoutes from "./routes/instructorRoutes.js";
 
 const app = express();
@@ -22,14 +23,26 @@ app.set("views", path.join(__dirname, "views"));
 app.use(expressLayouts);
 app.set("layout", "layouts/layout"); // default layout path
 
+// Expose current page for active menu highlighting
+app.use((req, res, next) => {
+  const pathName = req.path || "/";
+  if (pathName === "/") {
+    res.locals.page = "dashboard";
+  } else if (pathName.startsWith("/courses")) {
+    res.locals.page = "courses";
+  } else if (pathName.startsWith("/students")) {
+    res.locals.page = "students";
+  } else if (pathName.startsWith("/instructors")) {
+    res.locals.page = "instructors";
+  }
+  next();
+});
+
 // Routes
-// app.get("/", (req, res) => {
-//   res.render("dashboard", { title: "Dashboard" });
-// });
 
 app.use("/", dashboardRoutes);
-
 app.use("/courses", courseRoutes);
+app.use("/students", studentRoutes);
 app.use("/instructors", instructorRoutes);
 
 app.listen(PORT, () => {

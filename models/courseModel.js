@@ -19,13 +19,25 @@ export const getCourseById = async (id) => {
 };
 
 export const createCourse = async (data) => {
-  const { title, description, category_id, instructor_id } = data;
+  const { title, description, category_ids, instructor_ids } = data;
   await db
     .promise()
     .query(
-      "INSERT INTO courses (title, description, category_id, instructor_id) VALUES (?, ?, ?, ?)",
-      [title, description, category_id || null, instructor_id || null]
+      "INSERT INTO courses (title, description) VALUES (?, ?)",
+      [title, description]
     );
+    
+  const categoryId = result.insertId;
+  if (Array.isArray(category_ids) && category_ids.length > 0) {
+    const values = category_ids.map((cid) => [categoryId, cid]);
+    await db.promise().query("INSERT INTO courses (category_id) VALUES ?", [values]);
+  }
+
+  const instructorId = result.insertId;
+  if (Array.isArray(instructor_ids) && instructor_ids.length > 0) {
+    const values = instructor_ids.map((iid) => [instructorId, iid]);
+    await db.promise().query("INSERT INTO courses (instructor_id) VALUES ?", [values]);
+  }
 };
 
 export const updateCourse = async (id, data) => {

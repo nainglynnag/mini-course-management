@@ -25,7 +25,7 @@
   <div class="mb-4">
     <label class="block font-semibold mb-1">Category</label>
     <select
-      name="instructor_id"
+      name="category_id"
       class="w-full border border-gray-300 rounded px-3 py-2"
     >
       <option value="">-- Select Category --</option>
@@ -35,7 +35,7 @@
     </select>
   </div>
 
-  <div class="mb-4">
+  <div class="mb-6">
     <label class="block font-semibold mb-1">Instructor</label>
     <select
       name="instructor_id"
@@ -48,11 +48,15 @@
     </select>
   </div>
 
+  <div class="flex justify-end items-center gap-4">
+    <a href="/courses" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+  
   <button
     type="submit"
     class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
   >
     Save
   </button>
-  <a href="/courses" class="ml-4 text-gray-600 hover:underline">Cancel</a>
+  </div>
+  
 </form>
